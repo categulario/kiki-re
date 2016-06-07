@@ -72,20 +72,20 @@ t_error = """<font color="maroon"><b>Error:</b></font><br /><ul>%s</ul>"""
 t_nomatch = """<font color="teal"><b>No match found</b></font>"""
 
 # colors used to highlight matches
-colors = ["0000AA" , "00AA00" , "FFAA55" , "AA0000" , "00AAAA" , "AA00AA" , "AAAAAA" , 
-          "0000FF" , "00FF00" , "00FFFF" , "FF0000" , "DDDD00" , "FF00FF" , 
-          "AAAAFF" , "FF55AA" , "AAFF55" , "FFAAAA" , "55AAFF" , "FFAAFF" , 
+colors = ["0000AA" , "00AA00" , "FFAA55" , "AA0000" , "00AAAA" , "AA00AA" , "AAAAAA" ,
+          "0000FF" , "00FF00" , "00FFFF" , "FF0000" , "DDDD00" , "FF00FF" ,
+          "AAAAFF" , "FF55AA" , "AAFF55" , "FFAAAA" , "55AAFF" , "FFAAFF" ,
           "000077" , "007700" , "770000" , "007777" , "770077" , "777700" ]
 
 class Settings(object):
     """Stores and retrieves settings to a file as Python data
        structures which are eval()-ed. This is not by definition
        safe, but since the user has access to source code anyway
-       and hence the ability to screw up anything, the danger 
+       and hence the ability to screw up anything, the danger
        seems quite limited."""
     def __init__(self, savedir=None, dirname="", filename="settings.py", debugfile=""):
         """Initializes the object
-           
+
            Arguments:
            savedir -- directory where to store data
                       For more info, see the docs of Settings.setSaveDir()
@@ -99,20 +99,20 @@ class Settings(object):
         self.__setSaveDir(savedir, dirname, debugfile)
         self.savefilename = filename
         self.__load()
-        
+
     def shutdown(self):
         """Must be called before the program ends."""
         self.save()
-        
+
     def __setSaveDir(self, savedir=None, dirname="", debugfile=""):
         """Sets self.savedir
-           
+
            Arguments:
            savedir -- directory where to store data
                       if savedir==None, $HOME/dirname is used.
                       If necessary, the directory is created.
            dirname -- if savedir==None, dirname determines which
-                      subdirectory of the home dir data is stored 
+                      subdirectory of the home dir data is stored
                       in
            debugfile -- this file may be a filename which is imported
                         and may contain a variable called savedir
@@ -121,11 +121,11 @@ class Settings(object):
                         to override any other parameters. This allows
                         users to override the directory, bypassing
                         the application which needs the settings.
-           
+
            In some Windows installations (seems to be mainly a Win2k
            problem), $HOME points to the root directory. In this case,
            this function will try to use $USERPROFILE/dirname instead.
-           
+
            Overriding this default behaviour is possible by supplying the
            savedir variable in pearsdebug.py."""
         if savedir==None:
@@ -145,7 +145,7 @@ class Settings(object):
         if not os.path.exists(savedir):
             os.makedirs(savedir)
         self.savedir = savedir
-        
+
     def __load(self):
         """Loads the settings from a file. These settings are saved
            in Python code format which is eval()-ed, so it's not
@@ -156,17 +156,17 @@ class Settings(object):
             settingsfile.close()
         except: # if file doesn't exist
             self.settings= {}
-        
+
     def save(self):
         """Saves the settings to a file."""
         settingsfile = file(os.path.join(self.savedir, self.savefilename), "w")
         settingsfile.write(str(self.settings))
         settingsfile.close()
-        
+
     def set(self, settingname, value):
         """Changes the value of a setting with settingname to value."""
         self.settings[settingname] = value
-        
+
     def get(self, settingname, defaultval=None):
         """Returns the setting with settingname if present, otherwise
            returns defaultval and saves settingname with defaultval."""
@@ -191,8 +191,8 @@ class MyHtmlWindow(wx.html.HtmlWindow):
             os.environ["BROWSER"] = 'konqueror' # set it to konqueror
         import webbrowser # MUST be imported only AFTER os.environ has been modified
         webbrowser.open(linkinfo.GetHref(), 1)
-        
-        
+
+
 class MyFrame(wx.Frame):
     def __init__(self, *args, **kwds):
         # begin wxGlade: MyFrame.__init__
@@ -314,7 +314,7 @@ class MyFrame(wx.Frame):
         self.Notebook.AddPage(self.MatchesPane, "Matches")
         self.Notebook.AddPage(self.SampleTextPane, "Sample text")
         self.Notebook.AddPage(self.HelpPane, "Help")
-        TopPaneSizer.Add(wx.NotebookSizer(self.Notebook), 1, wx.EXPAND, 0)
+        TopPaneSizer.Add(self.Notebook, 1, wx.EXPAND, 0)
         self.BottomPane.SetAutoLayout(1)
         self.BottomPane.SetSizer(TopPaneSizer)
         MainSizer.Add(self.SplitterWindow, 1, wx.EXPAND, 0)
@@ -330,7 +330,7 @@ class MyFrameWithEvents(MyFrame):
     """Subclasses MyFrame - generated by wxGlade - and adds events."""
     def __init__(self, *args, **kwargs):
         MyFrame.__init__(self, *args, **kwargs)
-            
+
         # map option flags to checkboxes
         self.flagmapper = {FLAGIGNORE: self.IgnoreCheckBox,
                            FLAGMULTILINE: self.MultilineCheckBox,
@@ -338,37 +338,37 @@ class MyFrameWithEvents(MyFrame):
                            FLAGDOTALL: self.DotAllCheckBox,
                            FLAGUNICODE: self.UnicodeCheckBox,
                            FLAGVERBOSE: self.VerboseCheckBox}
-                               
+
         self.SetTitle(" " + self.GetTitle() + " " + __version__)
-            
+
         # set empty pages for HTML windows
         self.MatchesWindow.SetPage("")
         self.HelpWindow.SetPage("")
         self.HelpWindow.SetWindowStyleFlag(wx.SUNKEN_BORDER)
-            
+
         self.Notebook.SetSelection(0)
         self.RegexBox.Clear()
-            
+
         # bind events
         wx.EVT_BUTTON(self, ID_EVALUATE, self.evaluate)
         wx.EVT_CLOSE(self, self.close)
         wx.EVT_NOTEBOOK_PAGE_CHANGED(self, ID_NOTEBOOK, self.changePage)
         wx.EVT_COMBOBOX(self, ID_HELPCOMBOBOX, self.showhelp)
-            
+
         # apply settings
         self.loadSettings()
-            
+
         # move focus to regex input field
         self.RegexBox.SetFocus()
-            
+
         # initialize needed attribs
         self.matches = [] # list of found matches
-            
+
         self.path = os.path.split(sys.argv[0])[0] or os.getcwd() # remembers where Kiki is located
-        
+
     def icon(self, path=None):
         """Load and assign the icon
-            
+
            Arguments:
            path -- path where kiki.ico is located. If
                    path==None, the current directory is
@@ -382,12 +382,12 @@ class MyFrameWithEvents(MyFrame):
         iconfile = os.path.join(self.path, "kiki.ico")
         theicon = wx.Icon(iconfile, wx.BITMAP_TYPE_ICO)
         self.SetIcon(theicon)
-        
+
     def changePage(self, event):
         """Handles notebook page changes"""
         if event.GetSelection()==2 and not self.HelpWindow.GetOpenedPageTitle().strip():
             self.HelpWindow.SetPage(file(os.path.join(self.path, "docs", "index.html"),"r").read())
-        
+
     def showhelp(self, event):
         """Handles help combo box events"""
         sel = self.HelpSelection.GetStringSelection().lower() # must lower-case for comparisons
@@ -434,14 +434,14 @@ class MyFrameWithEvents(MyFrame):
                  "icq": "84243714" }
             about = about % d
             self.HelpWindow.SetPage(about)
-        
+
     def evaluate(self, event):
         """Actual functionality, triggered by Evaluate button press.
-           
+
            The regex is compiled if possible.
            If compilation is successful, the regex is added to the
            history and it's matched against the sample text.
-           If compilation is unsuccessful, the error message is 
+           If compilation is unsuccessful, the error message is
            displayed.
         """
         self.saveSettings()
@@ -459,7 +459,7 @@ class MyFrameWithEvents(MyFrame):
         except re.error, e:
             self.MatchesWindow.SetPage(t_error % e)
             return False # stop execution if error
-            
+
         if self.RegexBox.GetValue().strip(): # append to history if non-empty
             # get current history items
             currentitems = [self.RegexBox.GetValue()]
@@ -471,7 +471,7 @@ class MyFrameWithEvents(MyFrame):
             for item in currentitems:
                 self.RegexBox.Append(item)
             self.RegexBox.SetSelection(0) # set selection again
-            
+
         rawtext = self.SampleText.GetValue()
         # insider joke for the Sluggy fans
         if rawtext.strip()=="INSTANT FERRET-SHOCK!":
@@ -486,7 +486,7 @@ class MyFrameWithEvents(MyFrame):
             shock.append("</b>")
             self.MatchesWindow.SetPage("".join(shock))
             return None
-            
+
         self.matches = [] # empty the list of match objects
         output = []
         while 1:
@@ -494,7 +494,7 @@ class MyFrameWithEvents(MyFrame):
                 start = 0
             else:
                 start = self.matches[-1].end()
-                if len(self.matches[-1].group(0))==0: 
+                if len(self.matches[-1].group(0))==0:
                     # in case of expressions which return empty matches
                     # Without this condition, an endless loop would occur.
                     start += 1
@@ -516,7 +516,7 @@ class MyFrameWithEvents(MyFrame):
             if settings.get(RESULTS_SHOWNAMEDGROUPS, True):
                 # TODO: self.shownamedgroups()
                 pass
-        if settings.get(RESULTS_SHOWSAMPLE, True): 
+        if settings.get(RESULTS_SHOWSAMPLE, True):
             output.append("""<table cellpadding="0" cellspacing="0"><tr><td>
                                <b>Sample text matched against:</b>
                              </td></tr>
@@ -524,7 +524,7 @@ class MyFrameWithEvents(MyFrame):
             output.append(self.htmlize(rawtext) or "&nbsp;") # something must be in there, so if no raw text, at least force a space
             output.append("""</i></td></tr></table>""")
         self.MatchesWindow.SetPage("".join(output))
-            
+
     def htmlize(self, text):
         """Converts the text to html (escapes HTML entities and tags,
            converts spaces to &nbsp's and enters to <br>'s."""
@@ -535,15 +535,15 @@ class MyFrameWithEvents(MyFrame):
         result = result.replace("\r", "<br />")
         result = result.replace("\n", "<br />")
         return result
-        
+
     def formatmatch(self, match, index, matchtemplate, starttemplate, endtemplate):
         """Pretty-prints a match as HTML, with colors for groups, etc."""
-        # first, make a dictionary of start and end positions 
+        # first, make a dictionary of start and end positions
         # (each char number in the match may be mapped to zero, one or more
         # group numbers which start/end there)
         # Groups function according to first-to-open, last-to-close.
         starts, ends = {}, {}
-        # populate the dictionaries with empty lists 
+        # populate the dictionaries with empty lists
         # A -1 key is necessary for groups which do not participate in the match.
         for pos in range(-1, len(match.string)+1):
             starts[pos], ends[pos] = [], []
@@ -577,9 +577,9 @@ class MyFrameWithEvents(MyFrame):
                         result.append(self.htmlize(string[pos]))
                     break # stop the while loop
         result = "".join(result)
-        return matchtemplate % {MATCHINDEX: index, 
+        return matchtemplate % {MATCHINDEX: index,
                                 FORMATTEDMATCH: result}
-        
+
     def showmatches(self):
         """Converts the results to html code and returns that.
            Is not capable of handling an empty self.matches list of matches."""
@@ -598,7 +598,7 @@ class MyFrameWithEvents(MyFrame):
             # determine what part of the string we're looking at
             if index>0:
                 prevmatchend = self.matches[index-1].end()
-            else: 
+            else:
                 prevmatchend = 0
             if index+1 < len(self.matches):
                 nextmatchstart = self.matches[index+1].start()
@@ -615,7 +615,7 @@ class MyFrameWithEvents(MyFrame):
         html.append("""</font></td></tr></table>""")
         res = "".join(html)
         return res
-        
+
     def loadSettings(self):
         """Loads GUI settings from the settings system."""
         # load some size settings
@@ -638,22 +638,22 @@ class MyFrameWithEvents(MyFrame):
         size[0] = max(size[0], 640)
         size[1] = max(size[1], 480)
         self.SetSize(size)
-            
+
         # load the sample text and regex last used
         self.SampleText.SetValue(settings.get(SAMPLETEXT, ""))
         self.RegexBox.SetValue(settings.get(REGEX, ""))
-            
+
         # load the flags and desired type of re functionality
         for flag in self.flagmapper.keys():
             self.flagmapper[flag].SetValue(settings.get(flag, False))
         self.MethodBox.SetSelection(settings.get(SEARCHTYPE, 0))
-            
+
         # other settings
         self.SplitterWindow.SetSashPosition(settings.get(SASHPOSITION, 100))
-        
+
     def saveSettings(self, dosave=True):
-        """Puts all GUI settings in the settings system. 
-           
+        """Puts all GUI settings in the settings system.
+
            Arguments:
            dosave -- if True, the save() method of Settings is called
                      when done
@@ -662,31 +662,31 @@ class MyFrameWithEvents(MyFrame):
         settings.set(WINDOWSIZE, self.GetSize())
         settings.set(WINDOWPOSITION, self.GetPosition())
         settings.set(SASHPOSITION, self.SplitterWindow.GetSashPosition())
-            
+
         settings.set(SAMPLETEXT, self.SampleText.GetValue())
         settings.set(REGEX, self.RegexBox.GetValue())
-            
+
         # save the selected flags
         for flag in self.flagmapper.keys():
             settings.set(flag, self.flagmapper[flag].GetValue())
         settings.set(SEARCHTYPE, self.MethodBox.GetSelection())
-            
+
         if dosave: settings.save()
-        
+
     def close(self, event):
         """Prepares for shutdown and then closes the app."""
         self.saveSettings()
-            
+
         # shut down the settings system
         settings.shutdown()
-            
+
         # shut down the app
         self.Destroy()
-        
+
 def speCreate(parent, info=None):
     """Integration of Kiki into spe (http://spe.pycs.net)"""
     global settings
-    settings = Settings(dirname=".spe", filename="kikicfg.py", debugfile="kikidebug")        
+    settings = Settings(dirname=".spe", filename="kikicfg.py", debugfile="kikidebug")
     Kiki = MyFrameWithEvents(parent, -1, "")
     Kiki.SetTitle(Kiki.GetTitle() + " - the ferret in your Spe")
     if info and info.has_key('kikiPath'):
@@ -696,12 +696,11 @@ def speCreate(parent, info=None):
     Kiki.icon(kikipath)
     Kiki.Show(1)
     return Kiki
-    
+
 def main():
     global settings
-    settings = Settings(dirname=".kiki", filename="kikicfg.py", debugfile="kikidebug")        
-    Kiki = wx.PySimpleApp()
-    wx.InitAllImageHandlers()
+    settings = Settings(dirname=".kiki", filename="kikicfg.py", debugfile="kikidebug")
+    Kiki = wx.App()
     mw = MyFrameWithEvents(None, -1, "")
     mw.icon()
     Kiki.SetTopWindow(mw)
