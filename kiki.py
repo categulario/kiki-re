@@ -1,5 +1,5 @@
 #!/usr/bin/env python2
-"""Kiki 0.5.6 - A Free Environment for Regular Expression Testing (ferret)
+"""Kiki 0.5.7 - A Free Environment for Regular Expression Testing (ferret)
 
 Copyright (C) 2003, 2004 Project 5
 
@@ -26,7 +26,7 @@ icq: 84243714
 import wx
 import wx.html
 
-__version__ = "0.5.6"
+__version__ = "0.5.7"
 
 import re, os, os.path, cgi, sys
 
@@ -230,14 +230,14 @@ class MyFrame(wx.Frame):
         self.SetSize((640, 480))
         self.RegexBox.SetSelection(0)
         self.EvaluateButton.SetDefault()
-        self.MethodBox.SetToolTipString("Find all returns all matches, find first only the first one")
+        self.MethodBox.SetToolTip("Find all returns all matches, find first only the first one")
         self.MethodBox.SetSelection(0)
-        self.IgnoreCheckBox.SetToolTipString("Perform case-insensitive matching\nExpressions like [A-Z] will match lowercase letters too. This is not affected by the current locale.")
-        self.LocaleCheckBox.SetToolTipString("Make \w, \W, \\b, and \B dependent on the current locale.")
-        self.MultilineCheckBox.SetToolTipString("When specified, the pattern characters \"^\" and \"$\" match at the beginning respectively end of the string and at the beginning respectively end of each line (immediately following respectively preceding each newline).\nOtherwise \"^\" matches only at the beginning of the string, and \"$\" only at the end of the string and immediately before the newline (if any) at the end of the string.")
-        self.DotAllCheckBox.SetToolTipString("Make the \".\" special character match any character at all, including a newline. Without this flag, \".\" will match anything except a newline.")
-        self.UnicodeCheckBox.SetToolTipString("Make \w, \W, \\b, and \B dependent on the Unicode character properties database.")
-        self.VerboseCheckBox.SetToolTipString("This flag allows you to write regular expressions that look nicer.\nWhitespace within the pattern is ignored, except when in a character class or preceded by an unescaped backslash, and, when a line contains a \"#\" neither in a character class or preceded by an unescaped backslash, all characters from the leftmost such \"#\" through the end of the line are ignored. ")
+        self.IgnoreCheckBox.SetToolTip("Perform case-insensitive matching\nExpressions like [A-Z] will match lowercase letters too. This is not affected by the current locale.")
+        self.LocaleCheckBox.SetToolTip("Make \w, \W, \\b, and \B dependent on the current locale.")
+        self.MultilineCheckBox.SetToolTip("When specified, the pattern characters \"^\" and \"$\" match at the beginning respectively end of the string and at the beginning respectively end of each line (immediately following respectively preceding each newline).\nOtherwise \"^\" matches only at the beginning of the string, and \"$\" only at the end of the string and immediately before the newline (if any) at the end of the string.")
+        self.DotAllCheckBox.SetToolTip("Make the \".\" special character match any character at all, including a newline. Without this flag, \".\" will match anything except a newline.")
+        self.UnicodeCheckBox.SetToolTip("Make \w, \W, \\b, and \B dependent on the Unicode character properties database.")
+        self.VerboseCheckBox.SetToolTip("This flag allows you to write regular expressions that look nicer.\nWhitespace within the pattern is ignored, except when in a character class or preceded by an unescaped backslash, and, when a line contains a \"#\" neither in a character class or preceded by an unescaped backslash, all characters from the leftmost such \"#\" through the end of the line are ignored. ")
         self.HelpSelection.SetSelection(0)
         self.BottomPane.SetSize((623, 324))
         self.SplitterWindow.SplitHorizontally(self.TopPane, self.BottomPane, 120)
@@ -351,10 +351,12 @@ class MyFrameWithEvents(MyFrame):
         self.RegexBox.Clear()
 
         # bind events
-        wx.EVT_BUTTON(self, ID_EVALUATE, self.evaluate)
-        wx.EVT_CLOSE(self, self.close)
-        wx.EVT_NOTEBOOK_PAGE_CHANGED(self, ID_NOTEBOOK, self.changePage)
-        wx.EVT_COMBOBOX(self, ID_HELPCOMBOBOX, self.showhelp)
+        self.Bind( wx.EVT_BUTTON , self.evaluate , self.EvaluateButton )
+        self.Bind( wx.EVT_CLOSE , self.close )
+        self.Bind( wx.EVT_NOTEBOOK_PAGE_CHANGED , self.changePage ,
+                   self.Notebook )
+        self.Bind( wx.EVT_COMBOBOX , self.showhelp ,
+                   self.HelpSelection )
 
         # apply settings
         self.loadSettings()
@@ -622,7 +624,7 @@ class MyFrameWithEvents(MyFrame):
         # load some size settings
         # set window size and position; make sure it's on screen
         # and has a reasonable size
-        system = wx.SystemSettings_GetMetric
+        system = wx.SystemSettings.GetMetric
         pos = list(settings.get(WINDOWPOSITION, (-1,-1)))
         if pos[0]<-1: pos[0] = 0
         if pos[1]<-1: pos[1] = 0

@@ -1,12 +1,18 @@
-KIKI 0.5.6 - regexes made nifty
+KIKI 0.5.7 - regexes made nifty
 
-Copyright (C) 2003, 2004 Project 5 (http://come.to/project5)
+Copyright (C) 2003, 2004 Project 5
 Licence: GPL (free)
 Requires: Python, wxPython
 System: any, provided (wx)Python runs on it
 
 History
 =======
+0.5.7 (6-19-2017, 32.5 kB)
+ - updated wxPython binding calls again against deprecated calls
+ - updated SetToolTipString calls to match new SetToolTip function
+    name
+ - tested on Python 2.7 and wxPython 4.0
+
 0.5.6 (8-4-2004, 32.5 kB)
  - changed code to support wxPython 2.5.1.5
  - saves settings before evaluating the regex
