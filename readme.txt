@@ -1,6 +1,6 @@
-KIKI 0.5.6 - regexes made nifty
+KIKI 0.5.7 - regexes made nifty
 
-Copyright (C) 2003, 2004 Project 5 (http://come.to/project5)
+Copyright (C) 2003, 2004 Project 5
 Licence: GPL (free)
 Requires: Python, wxPython
 System: any, provided (wx)Python runs on it
