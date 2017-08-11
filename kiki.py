@@ -171,7 +171,7 @@ class Settings(object):
     def get(self, settingname, defaultval=None):
         """Returns the setting with settingname if present, otherwise
            returns defaultval and saves settingname with defaultval."""
-        if self.settings.has_key(settingname):
+        if settingname in self.settings:
             return self.settings[settingname]
         else:
             self.set(settingname, defaultval)
@@ -186,9 +186,9 @@ class MyHtmlWindow(wx.html.HtmlWindow):
         # there's a problem in KDE: the browser is not recognized properly
         # circumvent this problem
         import os
-        if os.environ.has_key("BROWSER") and \
+        if "BROWSER" in os.environ and \
            os.environ["BROWSER"]=='kfmclient openProfile webbrowsing':
-            print "Invalid browser detected : %s\nResetting to konqueror." % os.environ["BROWSER"]
+            print("Invalid browser detected : %s\nResetting to konqueror." % os.environ["BROWSER"])
             os.environ["BROWSER"] = 'konqueror' # set it to konqueror
         import webbrowser # MUST be imported only AFTER os.environ has been modified
         webbrowser.open(linkinfo.GetHref(), 1)
@@ -452,14 +452,14 @@ class MyFrameWithEvents(MyFrame):
         # STEP 1: try to compile the regex
         # get flags to use in the compilation
         flags = 0
-        for flag in self.flagmapper.keys():
+        for flag in list(self.flagmapper.keys()):
             if self.flagmapper[flag].IsChecked():
                 flags = flags|eval(flag)
         # compile the regex and stop with error message if invalid
         try:
             self.MatchesWindow.SetPage("")
             regex = re.compile(self.RegexBox.GetValue(), flags)
-        except re.error, e:
+        except re.error as e:
             self.MatchesWindow.SetPage(t_error % e)
             return False # stop execution if error
 
@@ -485,7 +485,7 @@ class MyFrameWithEvents(MyFrame):
             c = colors
             sa = shock.append
             t = """<font color="#%s">KIKI</font>"""
-            [ sa(t % (rc(c))) for i in xrange(10000) ]
+            [ sa(t % (rc(c))) for i in range(10000) ]
             shock.append("</b>")
             self.MatchesWindow.SetPage("".join(shock))
             return None
@@ -587,7 +587,7 @@ class MyFrameWithEvents(MyFrame):
         """Converts the results to html code and returns that.
            Is not capable of handling an empty self.matches list of matches."""
         if not self.matches:
-            raise ValueError, "self.matches must be non-empty list of re match opbjects"
+            raise ValueError("self.matches must be non-empty list of re match opbjects")
         index = -1 # number of current match that's being printed
         html = []
         html.append("""<table cellpadding="0" cellspacing="0"><tr><td bgcolor="#F8F8F8"><font color="#777777">""")
@@ -647,7 +647,7 @@ class MyFrameWithEvents(MyFrame):
         self.RegexBox.SetValue(settings.get(REGEX, ""))
 
         # load the flags and desired type of re functionality
-        for flag in self.flagmapper.keys():
+        for flag in list(self.flagmapper.keys()):
             self.flagmapper[flag].SetValue(settings.get(flag, False))
         self.MethodBox.SetSelection(settings.get(SEARCHTYPE, 0))
 
@@ -670,7 +670,7 @@ class MyFrameWithEvents(MyFrame):
         settings.set(REGEX, self.RegexBox.GetValue())
 
         # save the selected flags
-        for flag in self.flagmapper.keys():
+        for flag in list(self.flagmapper.keys()):
             settings.set(flag, self.flagmapper[flag].GetValue())
         settings.set(SEARCHTYPE, self.MethodBox.GetSelection())
 
@@ -692,7 +692,7 @@ def speCreate(parent, info=None):
     settings = Settings(dirname=".spe", filename="kikicfg.py", debugfile="kikidebug")
     Kiki = MyFrameWithEvents(parent, -1, "")
     Kiki.SetTitle(Kiki.GetTitle() + " - the ferret in your Spe")
-    if info and info.has_key('kikiPath'):
+    if info and 'kikiPath' in info:
         kikipath = info['kikiPath']
     else:
         kikipath = os.path.join(os.path.dirname(sys.argv[0]), "framework/contributions")
