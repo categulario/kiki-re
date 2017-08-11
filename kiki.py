@@ -29,6 +29,7 @@ import wx.html
 __version__ = "0.5.7"
 
 import re, os, os.path, cgi, sys
+from io import open
 
 # string constants
 WINDOWSIZE = "MainWindowSize"
@@ -152,9 +153,9 @@ class Settings(object):
            in Python code format which is eval()-ed, so it's not
            trustworthy."""
         try:
-            settingsfile = file(os.path.join(self.savedir, self.savefilename), "r")
-            self.settings = eval(settingsfile.read())
-            settingsfile.close()
+            settings_file = os.path.join( self.savedir , self.savefilename )
+            with open( settings_file , "r" ) as fh:
+                self.settings = eval( fh.read() )
         except: # if file doesn't exist
             self.settings= {}
 
@@ -388,8 +389,11 @@ class MyFrameWithEvents(MyFrame):
 
     def changePage(self, event):
         """Handles notebook page changes"""
-        if event.GetSelection()==2 and not self.HelpWindow.GetOpenedPageTitle().strip():
-            self.HelpWindow.SetPage(file(os.path.join(self.path, "docs", "index.html"),"r").read())
+        if( event.GetSelection()==2 and not self.HelpWindow.GetOpenedPageTitle().strip() ):
+            default_page = os.path.join( self.path , "docs" , "index.html" )
+            with open( default_page , "r" ) as fh:
+                page_contents = fh.read()
+            self.HelpWindow.SetPage( page_contents )
 
     def showhelp(self, event):
         """Handles help combo box events"""
@@ -419,9 +423,9 @@ class MyFrameWithEvents(MyFrame):
                 anchor = ""
             self.HelpWindow.LoadPage(filename+anchor)
         else: # build about-screen
-            f = file(os.path.join(self.path, "docs", "about.html"), "r")
-            about = f.read()
-            f.close()
+            about_file = os.path.join( self.path , "docs" , "about.html" )
+            with open( about_file , "r" ) as fh:
+                about = fh.read()
             # build the dictionary needed to format the string
             if self.GetTitle().lower().find("spe")>-1:
                 spe = "active"
