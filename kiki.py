@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 """Kiki 0.5.7 - A Free Environment for Regular Expression Testing (ferret)
 
 Copyright (C) 2003, 2004 Project 5
