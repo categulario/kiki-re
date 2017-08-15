@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Kiki 0.5.7 - A Free Environment for Regular Expression Testing (ferret)
+"""Kiki 0.6.0 - A Free Environment for Regular Expression Testing (ferret)
 
 Copyright (C) 2003, 2004 Project 5
 
@@ -26,7 +26,7 @@ icq: 84243714
 import wx
 import wx.html
 
-__version__ = "0.5.7"
+__version__ = "0.6.0"
 
 import re, os, os.path, cgi, sys
 from io import open
