@@ -1,8 +1,11 @@
 KIKI 0.6.0 - regexes made nifty
 
 Copyright (C) 2003, 2004 Project 5
+
 Licence: [GNU GPL v2](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html) (free)
+
 Requires: Python, wxPython
+
 System: any, provided (wx)Python runs on it
 
 See the [wiki](https://github.com/paulheider/kiki-re/wiki) for identical repos exported from the same original Google Code project.
