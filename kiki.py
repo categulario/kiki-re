@@ -30,6 +30,7 @@ __version__ = "0.5.7"
 
 import re, os, os.path, cgi, sys
 from io import open
+from builtins import str
 
 # string constants
 WINDOWSIZE = "MainWindowSize"
@@ -161,9 +162,9 @@ class Settings(object):
 
     def save(self):
         """Saves the settings to a file."""
-        settingsfile = file(os.path.join(self.savedir, self.savefilename), "w")
-        settingsfile.write(str(self.settings))
-        settingsfile.close()
+        settings_file = os.path.join( self.savedir , self.savefilename )
+        with open( settings_file , "w" ) as fh:
+            fh.write( u'{}'.format( str( self.settings ) ) )
 
     def set(self, settingname, value):
         """Changes the value of a setting with settingname to value."""
