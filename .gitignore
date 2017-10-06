@@ -1,3 +1,7 @@
 sys*
 wx*
 wx.html*
+
+*.pyc
+
+.coverage

@@ -457,7 +457,7 @@ class MyFrameWithEvents(MyFrame):
         # STEP 1: try to compile the regex
         # get flags to use in the compilation
         flags = 0
-        for flag in list(self.flagmapper.keys()):
+        for flag in self.flagmapper:
             if self.flagmapper[flag].IsChecked():
                 flags = flags|eval(flag)
         # compile the regex and stop with error message if invalid
@@ -652,7 +652,7 @@ class MyFrameWithEvents(MyFrame):
         self.RegexBox.SetValue(settings.get(REGEX, ""))
 
         # load the flags and desired type of re functionality
-        for flag in list(self.flagmapper.keys()):
+        for flag in self.flagmapper:
             self.flagmapper[flag].SetValue(settings.get(flag, False))
         self.MethodBox.SetSelection(settings.get(SEARCHTYPE, 0))
 
@@ -675,7 +675,7 @@ class MyFrameWithEvents(MyFrame):
         settings.set(REGEX, self.RegexBox.GetValue())
 
         # save the selected flags
-        for flag in list(self.flagmapper.keys()):
+        for flag in self.flagmapper:
             settings.set(flag, self.flagmapper[flag].GetValue())
         settings.set(SEARCHTYPE, self.MethodBox.GetSelection())
 
