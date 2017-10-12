@@ -1,0 +1,4 @@
+wxPython
+pytest
+pytest-cov
+future ; python_version < '3'
