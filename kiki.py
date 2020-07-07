@@ -28,7 +28,7 @@ import wx.html
 
 __version__ = "0.6.0"
 
-import re, os, os.path, cgi, sys
+import re, os, os.path, html, sys
 from io import open
 from builtins import str
 
@@ -536,7 +536,7 @@ class MyFrameWithEvents(MyFrame):
     def htmlize(self, text):
         """Converts the text to html (escapes HTML entities and tags,
            converts spaces to &nbsp's and enters to <br>'s."""
-        result = cgi.escape(text)
+        result = html.escape(text)
         result = result.replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;")
         result = result.replace("  ", "&nbsp;&nbsp;")
         result = result.replace("\r\n", "<br />")
