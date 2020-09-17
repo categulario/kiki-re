@@ -62,10 +62,9 @@ FLAGUNICODE = "re.UNICODE"
 FLAGVERBOSE = "re.VERBOSE"
 
 # constants required by the GUI
-ni = wx.NewId
-ID_EVALUATE = ni()
-ID_NOTEBOOK = ni()
-ID_HELPCOMBOBOX = ni()
+ID_EVALUATE = wx.ID_ANY
+ID_NOTEBOOK = wx.ID_ANY
+ID_HELPCOMBOBOX = wx.ID_ANY
 
 # global variable
 settings = None

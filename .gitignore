@@ -1,6 +1,8 @@
 sys*
 wx*
 wx.html*
+.venv/
+Pipfile*
 
 *.pyc
 
